@@ -1,0 +1,46 @@
+plaintext
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+*.log
+*.pot
+*.pyc
+
+# Системные файлы
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Виртуальные окружения
+venv/
+env/
+env.bak/
+venv.bak/
+.venv/
+
+# Папки с медиа и статикой
+/media/
+staticfiles/
+
+# Лог-файлы
+logs/
+logfile.log
+*.log
+
+# Конфигурационные файлы
+*.env
+*.local
+*.database
+
+# Pytest
+.cache/
+.pytest_cache/
+
+# Другие временные файлы
+*.swp  # Vim
+*.swo
+.idea/  # JetBrains IDE
+.vscode/  # VS Code
