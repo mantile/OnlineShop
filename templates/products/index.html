@@ -1,12 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div>
-    {% for product in products %}
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 100%; height: auto;" />
-            <h5>{{ product.name }}</h5>
-            <p>Цена: ${{ product.price }}</p>
-            <a href="{{ product.url }}">View options</a>
-    {% endfor %}
-</div>
+    <div class="product-grid">
+        {% for product, main_image in products_with_main_image %}
+            <div class="product-item">
+                <div class="image-container">
+                    {% if main_image %}
+                        <img src="{{ main_image.image.url }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                        {% if product.images.first %}
+                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="product-image">
+                        {% else %}
+                            <p>No image available</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <p class="product-title">{{ product.name }}</p>
+                    <p class="product-info">{{ product.product_type }}</p>
+                    <h1 class="product-price">{{ product.price }} ₽</h1>
+                    <button class="add-to-cart">В КОРЗИНУ</button>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:5 %}
+                </div><div class="product-grid">
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

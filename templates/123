@@ -28,3 +28,5 @@
     </footer>
 </body>
 </html>
+
+<img src="{{ MEDIA_URL }}html_images/1.png" alt="Shop Image" class="header-img">
