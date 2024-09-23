@@ -1,16 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-1
-{{ product.image_url }}
-{{ product.name }}
-{{ product.url }}
-{{ product.price }}
-<ul>
-    {% for product in product_list %}
-        <li>{{ product.name }}</li>
-    {% endfor %}
-</ul>
 <div>
     {% for product in products %}
             <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 100%; height: auto;" />
