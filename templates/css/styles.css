@@ -124,20 +124,19 @@ body {
 }
 
 .product-grid {
+  gap: 10px; /* Add 10px horizontal gap between items */
   display: flex;
   flex-wrap: wrap; /* Позволяет переносить элементы на следующий ряд */
-  justify-content: space-between; /* Распределение пространства между элементами */
 }
 
 .product-item {
-  flex: 0 0 calc(20% - 20px); /* Каждая карточка занимает 20% ширины контейнера */
-  width: 300px; /* Задайте желаемую ширину для элемента товара */
-  height: 460px; /* Задайте желаемую ширину для элемента товара */
+  width: 300px; /* Фиксированная ширина для карточек товаров */
+  height: 460px; /* Фиксированная высота для карточек товаров */
   overflow: hidden; /* Скрыть содержимое, выходящее за пределы */
-  position: relative; /* Позиционирование относительно для кнопки */
-  transition: box-shadow 0.3s; /* Плавный переход для тени (при наведении) */
   background-color: #f8f8f8; /* Цвет фона */
-  margin-top: 4px;
+  position: relative; /* Для кнопок или других элементов */
+  transition: box-shadow 0.3s; /* Плавный переход для тени (при наведении) */
+  margin-bottom: 5px; /* Add 5px vertical gap between items */
 }
 
 .product-item:hover {
@@ -211,16 +210,159 @@ body {
   border-radius: 3px; /* Скругление углов */
 }
 
-/* перенос иконок на зафиксированное меню */
-.fixed-icons {
-    position: fixed;
-    top: 0; /* Позиция фиксированных иконок */
-    right: 20px; /* Отступ от правого края */
-    display: flex;
-    flex-direction: column;
-    z-index: 1000; /* Чтобы они были поверх остальных элементов */
+.container_main {
+  display: flex; /* Используйте flexbox для выравнивания */
 }
 
-.fixed-icons .icon {
-    margin-bottom: 10px; /* Отступ между иконками */
+.sidebar {
+  width: 200px; /* Ширина бокового меню */
+  background-color: #f4f4f4; /* Цвет фона для бокового меню */
+}
+
+.vertical-menu {
+  padding: 20px;
+}
+
+.vertical-menu ul {
+  list-style: none; /* Уберите маркеры списка */
+  padding: 0;
+}
+
+.vertical-menu li {
+  margin-bottom: 10px;
+}
+
+.content {
+  flex: 1; /* Занимает оставшееся пространство */
+  padding: 20px;
+}
+
+main {
+  display: flex; /* Используем flexbox для родительского блока */
+  justify-content: center; /* Центрируем содержимое по горизонтали */
+}
+
+
+.sidebar {
+  width: 250px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
+}
+
+.vertical-menu {
+  padding: 20px;
+}
+
+.vertical-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.vertical-menu li {
+  margin-bottom: 10px;
+}
+
+.vertical-menu li a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  display: block;
+  border-radius: 5px;
+}
+
+.vertical-menu li a:hover {
+  color: #141414;
+}
+
+/* Стили для модального окна */
+.modal {
+  display: none; /* Скрыто по умолчанию */
+  position: fixed; /* Остаётся на месте при прокрутке */
+  z-index: 1; /* Ставим поверх остальных элементов */
+  left: 0;
+  top: 0;
+  width: 100%; /* 100% ширины */
+  height: 100%; /* 100% высоты */
+  overflow: auto; /* Включает прокрутку, если это необходимо */
+  background-color: rgba(0, 0, 0, 0.4); /* Фон с эффектом затемнения */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* Уменьшено по высоте */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Уменьшена ширина модального окна */
+  max-width: 400px; /* Максимальная ширина */
+  border-radius: 10px; /* Скругление углов */
+  position: relative; /* Для позиционирования закрывающего крестика */
+}
+
+h2 {
+  text-align: center; /* Центрирование заголовка */
+}
+
+.close {
+  color: #aaa;
+  float: right; /* Размещение в правом углу */
+  font-size: 28px; /* Увеличенный размер крестика */
+  font-weight: bold;
+  position: absolute; /* Позиционирование относительно контейнера */
+  top: 10px; /* Отступ сверху */
+  right: 15px; /* Отступ справа */
+  cursor: pointer; /* Курсор указателя при наведении */
+}
+
+.close:hover, .close:focus {
+  color: black; /* Цвет при наведении */
+  text-decoration: none; /* Убираем подчеркивание */
+  cursor: pointer; /* Курсор указателя при наведении */
+}
+
+input[type="text"], input[type="password"] {
+  width: 3px; /* Ширина полей ввода на 90% */
+  padding: 10px; /* Поля внутри ввода */
+  margin: 10px 0; /* Отступы между полями и кнопкой */
+  border: 1px solid #ccc; /* Обводка поля ввода */
+  border-radius: 5px; /* Скругление углов поля ввода */
+  font-size: 16px; /* Увеличение размера текста */
+}
+
+button[type="submit"] {
+  font-family: Sans-serif;
+  background-color: #000000; /* Цвет кнопки */
+  color: white; /* Цвет текста кнопки */
+  border: none; /* Убираем обводку кнопки */
+  cursor: pointer; /* Изменяем курсор при наведении */
+  border-radius: 3px; /* Скругление углов */
+  padding: 10px 15px; /* Поля кнопки */
+  font-size: 16px; /* Увеличение размера текста кнопки */
+  width: 400px; /* Ширина кнопки на 100% */
+}
+
+/* Стили для текстовых и парольных полей */
+input[type="text"], input[type="password"] {
+  width: 400px; /* Установите ширину полей ввода */
+  padding: 10px; /* Поля внутри ввода */
+  margin: 10px 0; /* Отступы между полями и кнопкой */
+  border: 1px solid #ccc; /* Обводка поля ввода */
+  border-radius: 5px; /* Скругление углов поля ввода */
+  font-size: 16px; /* Увеличение размера текста */
+}
+
+/* Дополнительные стили, если необходимо */
+.form-group {
+  margin-bottom: 15px; /* Отступы сопредельных полей */
+
+}
+
+.your-input-class {
+  width: 400px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }

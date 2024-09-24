@@ -29,7 +29,7 @@
                     <a href="#" class="icon">
                         <img src="{{ MEDIA_URL }}header_img/search.png" alt="Поиск" />
                     </a>
-                    <a href="#" class="icon">
+                    <a href="{% if user.is_authenticated %}{% url 'users:profile' %}{% else %}# {% endif %}" class="icon" id="openModal">
                         <img src="{{ MEDIA_URL }}header_img/user.png" alt="Личный кабинет" />
                     </a>
                     <a href="#" class="icon">
@@ -49,9 +49,73 @@
         <div class="image-header">
             <img src="{{ MEDIA_URL }}header_img/2.png" alt="Описание изображения" class="centered-image">
         </div>
+        <div class="under_header">
+            <div class="page_name">
+                <div class="product_type">
+                    {% block product_type %}
+                    {% endblock %}
+                </div>
+                <div class="navi">
+                    nav
+                </div>
+            </div>
+            <div class="sort_count">
+                <div class="sort_products"></div>
+                <div class="products_count"></div>
+            </div>
+        </div>
         <main>
-            {% block content %}
-            {% endblock %}
-        </main>
+            <div class="container_main">
+                {% block menu %}
+                {% endblock %}
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+    <!-- Модальное окно для входа -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2 id="modalTitle">Вход</h2>
+
+        <div id="modalPanel">
+            <form method="POST" action="{% url 'users:login' %}" id="loginForm">
+                {% csrf_token %}
+                <label for="username">Имя пользователя:</label><br>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Пароль:</label><br>
+                <input type="password" id="password" name="password" required><br><br>
+                <button type="submit">Войти</button>
+            </form>
+            <p>Нет аккаунта? <a href="{% url 'users:register' %}" id="switchToRegister">Зарегистрироваться</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var modal = document.getElementById("loginModal");
+
+        document.getElementById("openModal").addEventListener("click", function(event) {
+            if (!{{ user.is_authenticated|yesno:"true,false" }}) {
+                event.preventDefault();
+                modal.style.display = "block";
+            }
+        });
+
+        var span = document.getElementById("closeModal");
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
     </body>
 </html>

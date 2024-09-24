@@ -23,9 +23,26 @@
                     <button class="add-to-cart">В КОРЗИНУ</button>
                 </div>
             </div>
-            {% if forloop.counter|divisibleby:5 %}
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
                 </div><div class="product-grid">
             {% endif %}
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block product_type %}
+
+{% endblock %}
+
+{% block menu %}
+<aside class="sidebar">
+    <nav class="vertical-menu">
+        <ul>
+            <li><a href="#type1">Тип 1</a></li>
+            <li><a href="#type2">Тип 2</a></li>
+            <li><a href="#type3">Тип 3</a></li>
+            <li><a href="#type4">Тип 4</a></li>
+        </ul>
+    </nav>
+</aside>
 {% endblock %}

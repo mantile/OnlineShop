@@ -5,7 +5,7 @@ from unfold.admin import ModelAdmin
 
 @admin.register(Profile)
 class CustomAdminClass(ModelAdmin):
-    list_display = ('user', 'user_full_name', 'user_mail', 'adress', 'phone_number')
+    list_display = ('user', 'user_full_name', 'user_mail', 'address', 'phone_number')
     search_fields = ('user', 'phone_number', 'user_first_name', 'user_last_name', 'user_mail',)
     list_filter = ('user', 'phone_number')
 
