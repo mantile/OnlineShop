@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Ваши заказы</h2>
+
+{% if orders %}
+    <ul class="ul-order">
+        {% for order in orders %}
+            <li class="li-order">
+                <strong>Дата заказа:</strong> {{ order.order_date|date:"d-m-Y H:i" }} <br>
+                <strong>Статус:</strong> {{ order.status }} <br>
+                <strong>Товары:</strong><br>
+                <ul class="ul-order">
+                    {% for item in order.items.all %}
+                        <li class="li-order">
+                            {% if item.product.main_image %}  <!-- Check if main image exists -->
+                                <img class="img-order" src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}" width="100"> <br>
+                            {% else %}
+                                {% if item.product.images.first %}
+                                    <img class="img-order" src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" width="100"> <br>
+                                {% else %}
+                                    <p>Нет изображения</p>
+                                {% endif %}
+                            {% endif %}
+                            <strong>{{ item.product.name }}</strong> <br>
+                            Количество: {{ item.quantity }} <br>
+                            Цена за единицу: {{ item.unit_price }} <br>
+                            Общая стоимость: {{ item.total_price }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>У вас нет заказов.</p>
+{% endif %}
+{% endblock %}
+
+{% block menu %}
+<aside class="sidebar">
+    <nav class="vertical-menu">
+        <ul>
+            <li><a href="/users/profile/">Личный кабинет</a></li>
+            <li><a href="/orders/orders/">Заказы</a></li>
+            <li><a href="/orders/cart/">Корзина</a></li>
+        </ul>
+    </nav>
+</aside>
+{% endblock %}

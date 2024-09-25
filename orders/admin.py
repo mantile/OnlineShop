@@ -27,4 +27,4 @@ class CustomAdminClass(ModelAdmin):
     def get_products(self, obj):
         return ', '.join([f'{item.product.name} x {item.quantity}' for item in obj.items.all()])
 
-    get_products.short_descriptions = 'Product' # adnmin panel name
+    get_products.short_description = 'Product' # adnmin panel name

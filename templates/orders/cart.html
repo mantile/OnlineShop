@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Корзина
+{% endblock %}
+
+{% block content %}
+<h2>Ваша Корзина</h2>
+
+<div class="cart-items">
+    {% if cart.items.count > 0 %}
+        <ul>
+            {% for item in cart.items.all %}
+                <li>
+                    {% if item.product.main_image %}
+                        <img src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}" width="100">
+                    {% else %}
+                        <p>Изображение отсутствует</p>
+                    {% endif %}
+                    <strong>{{ item.product.name }}</strong><br>
+                    <p>{{ item.product.description }}</p>
+                    <p>Цена: {{ item.product.price }} руб.</p>
+                    <input type="number" value="{{ item.quantity }}" min="1" data-product-id="{{ item.product.id }}">
+                    <button class="update-quantity">Обновить</button>
+                    <p>Итого: {{ item.subtotal }} руб.</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ваша корзина пуста.</p>
+    {% endif %}
+</div>
+
+<div class="cart-summary">
+    <h3>Итог заказа</h3>
+    <p>Общее количество продуктов: {{ cart.total_quantity }}</p>
+    <p>Общая цена: {{ cart.total_price }} руб.</p>
+    <button>Оформить заказ</button>
+</div>
+{% endblock %}
+
+{% block menu %}
+<aside class="sidebar">
+    <nav class="vertical-menu">
+        <ul>
+            <li><a href="/users/profile/">Личный кабинет</a></li>
+            <li><a href="/orders/orders/">Заказы</a></li>
+            <li><a href="/orders/cart/">Корзина</a></li>
+        </ul>
+    </nav>
+</aside>
+<script>
+    document.querySelectorAll('.update-quantity').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = button.previousElementSibling; // Получаем элемент input
+            const quantity = input.value;
+            const productId = input.dataset.productId;
+
+            fetch(`/cart/update_quantity/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ quantity: quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Обновите общую цену и количество на странице
+                // (нужно реализовать логику обновления UI)
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+    </script>
+{% endblock %}

@@ -6,8 +6,8 @@
         {% for product, main_image in products_with_main_image %}
             <div class="product-item">
                 <div class="image-container">
-                    {% if main_image %}
-                        <img src="{{ main_image.image.url }}" alt="{{ product.name }}" class="product-image">
+                    {% if product.main_image %}
+                        <img src="{{ product.main_image.image.url }}" alt="{{ product.name }}" class="product-image">
                     {% else %}
                         {% if product.images.first %}
                             <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="product-image">
@@ -20,7 +20,7 @@
                     <p class="product-title">{{ product.name }}</p>
                     <p class="product-info">{{ product.product_type }}</p>
                     <h1 class="product-price">{{ product.price }} ₽</h1>
-                    <button class="add-to-cart">В КОРЗИНУ</button>
+                    <button class="add-to-cart" data-product-id="{{ product.id }}">В КОРЗИНУ</button>
                 </div>
             </div>
             {% if forloop.counter|divisibleby:3 and not forloop.last %}
@@ -45,4 +45,30 @@
         </ul>
     </nav>
 </aside>
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.add-to-cart').click(function(e) {
+            e.preventDefault();
+            var productId = $(this).data('product-id');
+
+            $.ajax({
+                url: '/orders/add-to-cart/' + productId + '/',
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Не забудьте передать CSRF-токен
+                },
+                success: function(response) {
+                    alert('Товар добавлен в корзину! Общее количество: ' + response.total_quantity);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('Произошла ошибка при добавлении товара в корзину.');
+                }
+            });
+        });
+    });
+    </script>
 {% endblock %}

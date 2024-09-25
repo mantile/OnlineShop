@@ -14,14 +14,27 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("scroll", checkScroll);
 });
 
-document.getElementById('switchToRegister').addEventListener('click', function(e) {
-    e.preventDefault(); // Отменяем стандартное поведение ссылки
-    document.getElementById('loginForm').style.display = 'none'; // Скрываем форму входа
-    document.getElementById('registrationPanel').style.display = 'block'; // Показываем форму регистрации
-});
+const button = document.getElementById('add-to-cart-button');
+if (button) {
+    button.addEventListener('click', function() {
+        const productId = this.dataset.productId;  // Предполагается, что у кнопки есть атрибут data-product-id
 
-document.getElementById('switchToLogin').addEventListener('click', function(e) {
-    e.preventDefault(); // Отменяем стандартное поведение ссылки
-    document.getElementById('loginForm').style.display = 'block'; // Показываем форму входа
-    document.getElementById('registrationPanel').style.display = 'none'; // Скрываем форму регистрации
-});
+        $.ajax({
+            url: '/orders/add-to-cart/' + productId + '/',
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken, // Передавайте CSRF-токен
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Товар добавлен в корзину! Общее количество: ' + response.total_quantity);
+                } else {
+                    alert('Ошибка: ' + response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Произошла ошибка при добавлении товара в корзину.');
+            }
+        });
+    });
+}

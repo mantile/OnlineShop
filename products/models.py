@@ -29,6 +29,12 @@ class Product(models.Model):
         self.clean()  # Вызов валидации перед сохранением
         super().save(*args, **kwargs)
 
+    @property
+    def main_image(self):
+        main_image = self.images.filter(is_main=True).first()
+        return main_image
+
+
     def __str__(self):
         return self.name
 

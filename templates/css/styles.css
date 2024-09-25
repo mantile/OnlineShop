@@ -131,7 +131,7 @@ body {
 
 .product-item {
   width: 300px; /* Фиксированная ширина для карточек товаров */
-  height: 460px; /* Фиксированная высота для карточек товаров */
+  height: 480px; /* Фиксированная высота для карточек товаров */
   overflow: hidden; /* Скрыть содержимое, выходящее за пределы */
   background-color: #f8f8f8; /* Цвет фона */
   position: relative; /* Для кнопок или других элементов */
@@ -322,7 +322,7 @@ h2 {
 }
 
 input[type="text"], input[type="password"] {
-  width: 3px; /* Ширина полей ввода на 90% */
+  width: 380px; /* Ширина полей ввода на 90% */
   padding: 10px; /* Поля внутри ввода */
   margin: 10px 0; /* Отступы между полями и кнопкой */
   border: 1px solid #ccc; /* Обводка поля ввода */
@@ -342,15 +342,6 @@ button[type="submit"] {
   width: 400px; /* Ширина кнопки на 100% */
 }
 
-/* Стили для текстовых и парольных полей */
-input[type="text"], input[type="password"] {
-  width: 400px; /* Установите ширину полей ввода */
-  padding: 10px; /* Поля внутри ввода */
-  margin: 10px 0; /* Отступы между полями и кнопкой */
-  border: 1px solid #ccc; /* Обводка поля ввода */
-  border-radius: 5px; /* Скругление углов поля ввода */
-  font-size: 16px; /* Увеличение размера текста */
-}
 
 /* Дополнительные стили, если необходимо */
 .form-group {
@@ -358,11 +349,19 @@ input[type="text"], input[type="password"] {
 
 }
 
-.your-input-class {
-  width: 400px;
+.ul-order {
+  list-style-type: none;
+  padding: 0;
+}
+
+.li-order {
   padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
   border-radius: 5px;
-  font-size: 16px;
+}
+
+.img-order {
+  max-height: 100px;
+  margin-right: 10px;
 }
