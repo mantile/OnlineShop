@@ -7,35 +7,71 @@
 {% block content %}
 <h2>Ваша Корзина</h2>
 
-<div class="cart-items">
-    {% if cart.items.count > 0 %}
-        <ul>
-            {% for item in cart.items.all %}
-                <li>
-                    {% if item.product.main_image %}
-                        <img src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}" width="100">
-                    {% else %}
-                        <p>Изображение отсутствует</p>
-                    {% endif %}
-                    <strong>{{ item.product.name }}</strong><br>
-                    <p>{{ item.product.description }}</p>
-                    <p>Цена: {{ item.product.price }} руб.</p>
-                    <input type="number" value="{{ item.quantity }}" min="1" data-product-id="{{ item.product.id }}">
-                    <button class="update-quantity">Обновить</button>
-                    <p>Итого: {{ item.subtotal }} руб.</p>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Ваша корзина пуста.</p>
-    {% endif %}
-</div>
+<div class="cart-container" style="display: flex; justify-content: space-between;">
+    <div class="cart-items" style="flex: 1; padding-right: 20px;">
+        {% if cart.items.count > 0 %}
+            <strong>Товары в корзине:</strong><br>
+            <ul class="ul-cart" style="list-style: none; padding: 0;">
+                {% for item in cart.items.all %}
+                    <li class="li-cart" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                        {% if item.product.main_image %}
+                            <img class="img-cart" src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}" width="100" style="margin-right: 15px;">
+                        {% else %}
+                            <p>Изображение отсутствует</p>
+                        {% endif %}
+                        <div style="flex: 1;">
+                            <strong>{{ item.product.name }}</strong><br><br>
+                            <p>Цена: <span class="unit-price" data-price="{{ item.product.price }}" data-product-id="{{ item.product.id }}">{{ item.product.price }}</span> руб.</p>
+                            <div style="display: flex; align-items: center;">
+                                <button class="quantity-decrease" data-product-id="{{ item.product.id }}" style="margin-right: 5px;">-</button>
+                                <input type="number" value="{{ item.quantity }}" min="1" data-product-id="{{ item.product.id }}" class="quantity-input" style="width: 60px; text-align: center; margin-right: 5px;">
+                                <button class="quantity-increase" data-product-id="{{ item.product.id }}" style="margin-left: 5px;">+</button>
+                            </div>
+                            <div style="position: relative; margin-top: 15px; text-align: right;">
+                                <span>Итого: <span class="subtotal" data-product-id="{{ item.product.id }}">{{ item.subtotal }}</span> руб.</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Ваша корзина пуста.</p>
+        {% endif %}
+    </div>
 
-<div class="cart-summary">
-    <h3>Итог заказа</h3>
-    <p>Общее количество продуктов: {{ cart.total_quantity }}</p>
-    <p>Общая цена: {{ cart.total_price }} руб.</p>
-    <button>Оформить заказ</button>
+    {% if cart.items.count > 0 %}
+    <div class="cart-summary" style="flex: 1; padding-left: 20px; border-left: 1px solid #ddd;">
+        <h3>Итог заказа</h3>
+        <p>Общее количество продуктов: {{ cart.total_quantity }}</p>
+        <p>Общая цена: {{ cart.total_price }} руб.</p>
+        <button id="checkout-button" style="margin-top: 20px; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer;">
+            Оформить заказ
+        </button>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $('#checkout-button').click(function() {
+                $.ajax({
+                    url: "{% url 'orders:create_order' %}",  // Используйте имя с пространством
+                    type: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    data: {},
+                    success: function(response) {
+                        if (response.success) {
+                            alert('Заказ оформлен успешно!');
+                            location.href = "/orders/orders/";  // Пример перенаправления
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Ошибка при оформлении заказа: ' + xhr.responseJSON.message);
+                    }
+                });
+            });
+        </script>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
 
@@ -50,27 +86,25 @@
     </nav>
 </aside>
 <script>
-    document.querySelectorAll('.update-quantity').forEach(button => {
-        button.addEventListener('click', function() {
-            const input = button.previousElementSibling; // Получаем элемент input
-            const quantity = input.value;
-            const productId = input.dataset.productId;
-
-            fetch(`/cart/update_quantity/${productId}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ quantity: quantity })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Обновите общую цену и количество на странице
-                // (нужно реализовать логику обновления UI)
-            })
-            .catch(error => console.error('Error:', error));
-        });
+    document.getElementById('checkout-button').addEventListener('click', function() {
+        fetch('/orders/create_order/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Успешно создан заказ, можно сделать редирект или показать уведомление
+                window.location.href = '/orders/orders/';  // Перенаправление на страницу заказов
+            } else {
+                // Ошибка при создании заказа
+                alert('Ошибка при оформлении заказа.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     });
     </script>
 {% endblock %}

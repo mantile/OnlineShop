@@ -6,29 +6,40 @@
 {% if orders %}
     <ul class="ul-order">
         {% for order in orders %}
-            <li class="li-order">
-                <strong>Дата заказа:</strong> {{ order.order_date|date:"d-m-Y H:i" }} <br>
-                <strong>Статус:</strong> {{ order.status }} <br>
-                <strong>Товары:</strong><br>
-                <ul class="ul-order">
-                    {% for item in order.items.all %}
-                        <li class="li-order">
-                            {% if item.product.main_image %}  <!-- Check if main image exists -->
-                                <img class="img-order" src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}" width="100"> <br>
-                            {% else %}
-                                {% if item.product.images.first %}
-                                    <img class="img-order" src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" width="100"> <br>
+            <li class="li-order" style="display: flex; margin-bottom: 20px;">
+                <div class="order-info" style="flex: 1; padding-right: 20px;">
+                    <strong>Номер заказа:</strong> {{ order.id }} <br><br>
+                    <strong>Дата заказа:</strong> {{ order.order_date|date:"d-m-Y H:i" }} <br><br>
+                    <strong>Статус:</strong> {{ order.status }} <br><br>
+                    <strong>Общая цена заказа:</strong> {{ order.total_order_price|floatformat:2 }} <br><br> <!-- Итоговая цена -->
+                </div>
+
+                <div class="order-items" style="flex: 2;">
+                    <strong>Товары:</strong><br>
+                    <ul class="ul-order" style="list-style: none; padding: 0;">
+                        {% for item in order.items.all %}
+                            <li class="li-order" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; display: flex; align-items: flex-start;">
+                                {% if item.product.main_image %}
+                                    <img class="img-order" src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}" width="100" style="margin-right: 15px;">
                                 {% else %}
-                                    <p>Нет изображения</p>
+                                    {% if item.product.images.first %}
+                                        <img class="img-order" src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" width="100" style="margin-right: 15px;">
+                                    {% else %}
+                                        <p>Нет изображения</p>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                            <strong>{{ item.product.name }}</strong> <br>
-                            Количество: {{ item.quantity }} <br>
-                            Цена за единицу: {{ item.unit_price }} <br>
-                            Общая стоимость: {{ item.total_price }}
-                        </li>
-                    {% endfor %}
-                </ul>
+                                <div style="flex: 1;">
+                                    <strong>{{ item.product.name }}</strong> <br><br>
+                                    <span style="margin-top: 10px;">Количество: {{ item.quantity }}</span><br>
+                                    <div style="position: relative; margin-top: 15px;">
+                                        <span style="float: left;">Цена за единицу: {{ item.unit_price|floatformat:2 }}</span>
+                                        <span style="float: right;">Общая стоимость: {{ item.total_price|floatformat:2 }}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </li>
         {% endfor %}
     </ul>

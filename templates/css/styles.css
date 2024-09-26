@@ -362,6 +362,7 @@ button[type="submit"] {
 }
 
 .img-order {
-  max-height: 100px;
+  height: 150px;
+  width: 20%;
   margin-right: 10px;
 }
